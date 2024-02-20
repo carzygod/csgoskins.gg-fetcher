@@ -50,7 +50,7 @@ async function main (itemsName)
         );
         const page = await browser.newPage();
         await page.goto(url+itemsName);
-        await page.waitForTimeout(2000) 
+        await page.waitForTimeout(3000) 
         await page.setViewport({width: 1080, height: 1024});
         const sel = 'div.bg-gray-800.rounded.shadow-md.relative.flex.items-center.flex-wrap.my-4'
         const eles =  await page.evaluate((sel) => {
@@ -100,15 +100,23 @@ async function init()
 
     //Fetch all the price data 
 
-    fs.appendFileSync('./data/price.json',
-    `{`
-    , 'utf8'); 
-    for(var i = 0 ; i < rawCatalog.length ; i++)
+    console.log(rawCatalog.length)
+    // fs.appendFileSync('./data/price.json',
+    // `{`
+    // , 'utf8'); 
+    for(var i = 3044 ; i < rawCatalog.length ; i++)
     {
-        const ret = await main(rawCatalog[i])
-        fs.appendFileSync('./data/price.json',
-        `"${rawCatalog[i]}" : ${JSON.stringify(ret)},`
-        , 'utf8'); 
+        console.log(i)
+        try{
+            const ret = await main(rawCatalog[i])
+            fs.appendFileSync('./data/price.json',
+            `"${rawCatalog[i]}" : ${JSON.stringify(ret)},`
+            , 'utf8'); 
+        }catch(e)
+        {
+            console.log(e)
+        }
+
     }
 
 }
